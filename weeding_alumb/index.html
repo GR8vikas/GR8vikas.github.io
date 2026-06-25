@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikas & Krushi - Digital Wedding Album</title>
+    <meta name="description" content="Explore the official interactive digital wedding photo album and selection portal for Vikas & Krushi. View high-resolution moments and select favorites.">
+    
+    <!-- Open Graph tags for premium sharing experience -->
+    <meta property="og:title" content="Vikas & Krushi - Digital Wedding Album">
+    <meta property="og:description" content="An interactive 3D digital photo book and selection portal capturing the beautiful wedding journey of Vikas & Krushi.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts: Elegant script (Pinyon Script), romantic serif (Cormorant Garamond), and modern clean sans-serif (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for premium iconography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Premium Loader -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <h2 class="loader-title">Vikas & Krushi</h2>
+            <div class="loader-line"></div>
+            <p class="loader-subtitle">Loading Your Love Story...</p>
+        </div>
+    </div>
+
+    <!-- Background Music Audio Player -->
+    <audio id="bg-music" loop>
+        <!-- Royalty-free soft wedding flute/sitar instrumental melody -->
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Main Navigation Bar -->
+    <header class="app-header">
+        <div class="header-logo" id="logo-button">
+            <span class="logo-script">Vikas & Krushi</span>
+            <span class="logo-sub">Wedding Archive</span>
+        </div>
+        <nav class="header-nav">
+            <button id="btn-view-book" class="nav-btn active" aria-label="Switch to Flipbook View">
+                <i class="fa-solid fa-book-open"></i> <span>View Album</span>
+            </button>
+            <button id="btn-view-grid" class="nav-btn" aria-label="Switch to Selection Grid">
+                <i class="fa-solid fa-images"></i> <span>Select Photos</span>
+            </button>
+        </nav>
+        <div class="header-actions">
+            <!-- Music Toggle Button -->
+            <button id="btn-music-toggle" class="action-circle-btn" aria-label="Toggle Background Music">
+                <i class="fa-solid fa-volume-xmark"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-container">
+        
+        <!-- SECTION 1: INTERACTIVE 3D FLIPBOOK VIEW -->
+        <section id="section-book" class="view-section active-view" aria-label="Wedding Flipbook">
+            <div class="book-container-wrapper">
+                <!-- Instruction tooltip -->
+                <div class="helper-tooltip" id="helper-tooltip">
+                    <i class="fa-solid fa-hand-pointer"></i> Click corners or use arrow keys to flip pages
+                </div>
+                
+                <div class="book-viewport">
+                    <div id="wedding-book" class="book">
+                        <!-- Pages will be dynamically injected here by JS -->
+                    </div>
+                </div>
+                
+                <!-- Flipbook Controls -->
+                <div class="book-controls">
+                    <button id="book-prev" class="control-btn" aria-label="Previous Page">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="page-indicator">
+                        <span id="current-page-num">Cover</span>
+                    </div>
+                    
+                    <button id="book-next" class="control-btn" aria-label="Next Page">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Timeline Slider at the bottom of the book -->
+                <div class="book-timeline-container">
+                    <span class="timeline-label">Scroll Journey</span>
+                    <input type="range" id="book-timeline" min="0" max="14" value="0" class="timeline-slider">
+                    <div class="timeline-ticks" id="timeline-ticks">
+                        <!-- Tick marks will be generated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PHOTO SELECTION GRID VIEW (WEEDING WORKSPACE) -->
+        <section id="section-grid" class="view-section" aria-label="Photo Selection Workspace">
+            <div class="selection-workspace">
+                <aside class="selection-sidebar">
+                    <div class="sidebar-card selection-summary-card">
+                        <h2 class="sidebar-title"><i class="fa-solid fa-heart-pulse gold-text"></i> Selection Tool</h2>
+                        <p class="sidebar-desc">Heart photos you want to keep. The photographer needs your final list for printing.</p>
+                        
+                        <div class="counter-display">
+                            <span class="count-number" id="selected-count">0</span>
+                            <span class="count-total">/ 50 selected</span>
+                        </div>
+                        
+                        <div class="selection-progress-bar">
+                            <div class="progress-fill" id="selection-progress-fill" style="width: 0%;"></div>
+                        </div>
+
+                        <div class="action-buttons-group">
+                            <button id="btn-export-list" class="primary-btn block-btn" disabled>
+                                <i class="fa-solid fa-copy"></i> Copy Selected List
+                            </button>
+                            <button id="btn-download-selected" class="secondary-btn block-btn" disabled>
+                                <i class="fa-solid fa-download"></i> Download Selected Photos
+                            </button>
+                            <button id="btn-clear-selection" class="text-btn block-btn" disabled>
+                                <i class="fa-solid fa-trash-can"></i> Clear Selection
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters Card -->
+                    <div class="sidebar-card filter-card">
+                        <h3 class="sidebar-subtitle">Categories</h3>
+                        <div class="filter-options">
+                            <button class="filter-btn active" data-filter="all">All Photos (299)</button>
+                            <button class="filter-btn" data-filter="groom-family">Groom & Family (208)</button>
+                            <button class="filter-btn" data-filter="fulhar-couple">Fulhar & Couple (91)</button>
+                            <button class="filter-btn" data-filter="favorites">My Favorites (<span id="favorites-badge-count">0</span>)</button>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="grid-main-content">
+                    <div class="grid-controls-bar">
+                        <h1 class="grid-title">All Photos</h1>
+                        <div class="grid-actions">
+                            <span class="grid-info-text">Click any photo to view in fullscreen high-res.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="photos-grid" id="photos-grid">
+                        <!-- Dynamic grid items will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- IMMERSIVE FULLSCREEN LIGHTBOX MODAL -->
+    <div id="lightbox" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Photo Viewer">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close Fullscreen Viewer">&times;</button>
+        
+        <button class="lightbox-arrow arrow-left" id="lightbox-prev" aria-label="Previous Photo">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="lightbox-arrow arrow-right" id="lightbox-next" aria-label="Next Photo">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        
+        <div class="lightbox-content">
+            <div class="lightbox-image-container">
+                <img src="" id="lightbox-img" alt="Enlarged wedding moment">
+                <div class="lightbox-loader" id="lightbox-loader"></div>
+            </div>
+            
+            <!-- Bottom info and controls inside lightbox -->
+            <div class="lightbox-details">
+                <div class="lightbox-info">
+                    <span class="lightbox-filename" id="lightbox-filename">DSC_8613.JPG</span>
+                    <span class="lightbox-category" id="lightbox-category">Groom & Family</span>
+                </div>
+                <div class="lightbox-actions">
+                    <button class="lightbox-action-btn" id="lightbox-favorite" aria-label="Favorite this photo">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <a href="" target="_blank" download class="lightbox-action-btn" id="lightbox-download" aria-label="Download Photo">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Notification Toast -->
+    <div class="toast-notification" id="toast">
+        <i class="fa-solid fa-circle-check gold-text"></i> <span id="toast-message">Copied successfully!</span>
+    </div>
+
+    <!-- Main Logic Script -->
+    <script src="app.js"></script>
+</body>
+</html>
